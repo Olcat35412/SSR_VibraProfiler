@@ -18,6 +18,8 @@ from operator import itemgetter
 import matplotlib.pyplot as plt
 import pickle
 import subprocess
+import time
+
 parser = argparse.ArgumentParser(description='A Variety Recognition Model Based on Whole Genome SSR Digital Features')
 parser.add_argument('-o','--output_path',required=True)
 parser.add_argument('-s','--start_stage',required=True,type=int,choices=[1,2,3],default=1)
@@ -84,6 +86,7 @@ def mini(file_path,out):
     os.system(command)
 #stage 1-1 build inputfile of minia
 if 1 in opertional_stage:
+    start_time = time.time()
     if spm_type == 'pair':
         now_path=os.path.abspath('.')
         file_number=len(all_individual)
@@ -119,6 +122,11 @@ if 1 in opertional_stage:
         log ='stage 1 has been ended'
         command = 'echo '+log+'>> log.txt'
         os.system(command)
+    end_time = time.time()
+    stage_duration = end_time - start_time
+    log = f"stage 1 take {stage_duration} second"
+    command = 'echo '+log+'>> log.txt'
+    os.system(command)
 #stage 2 misa
 def misa(file):
     command ='misa.pl ' + file
@@ -136,10 +144,12 @@ def traverse_folder_contigs_file(path):
                     print(path+'/'+file)
                     contigs_file_path_list.append(path+'/'+file)
     return contigs_file_path_list
+    
 if 2 in opertional_stage:
+    start_time = time.time()
     command = """echo 'definition(unit_size,min_repeats):                   1-10 2-6 3-5 4-5 5-5 6-4\ninterruptions(max_difference_between_2_SSRs): 100\nGFF:                               false' > misa.ini"""
     subprocess.run(command, shell=True)
-    pool = multiprocessing.Pool(40)
+    pool = multiprocessing.Pool(misa_proceedings)
     for individual in all_individual:
         intact_path=individual+'.contigs.fa'
         pool.apply_async(misa, (intact_path, ))
@@ -151,6 +161,11 @@ if 2 in opertional_stage:
     command = 'echo '+log+'>> log.txt'
     os.system(command)
     log = 'stage 2 has been ended'
+    command = 'echo '+log+'>> log.txt'
+    os.system(command)
+    end_time = time.time()
+    stage_duration = end_time - start_time
+    log = f"stage 2 take {stage_duration} second"
     command = 'echo '+log+'>> log.txt'
     os.system(command)
 #stage 3 ssr_selection
@@ -302,7 +317,7 @@ def ssr_selection(individual_variety_file):
                     all_ssr_data_base_on_polymorphism_ssr[individual]+=[0]
                 else:
                     all_ssr_data_base_on_polymorphism_ssr[individual]+=[nested_dict_include_ssr_info[individual].get(SSR)]
-    pool = multiprocessing.Pool(10)
+    pool = multiprocessing.Pool(1)
     for ssr in polymorphism_ssr:
         get_ssr_data_base_on_polymorphism_ssr(ssr,all_misa_file_path)
         pool.apply_async(get_ssr_data_base_on_polymorphism_ssr,(ssr,all_misa_file_path))
@@ -340,4 +355,10 @@ def ssr_selection(individual_variety_file):
     print('use this command for cross-validate:')
     print('SSR_VibraProfiler_cross_validation.py -index {} -pp {} -o {} -log {}'.format(individual_variety_file,polymorphism_parameter,output_path,'your_log_file_to_save_cross-validate_result'))
 if 3 in opertional_stage:
+    start_time = time.time()
     ssr_selection(individual_variety_file)
+    end_time = time.time()
+    stage_duration = end_time - start_time
+    log = f"stage 3 take {stage_duration} second"
+    command = 'echo '+log+'>> log.txt'
+    os.system(command)
