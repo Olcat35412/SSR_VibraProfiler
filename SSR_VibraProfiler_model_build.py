@@ -41,8 +41,6 @@ polymorphism_parameter=args['polymorphism_parameter']
 spm_type=args['spm_type']
 individual_variety_file=os.path.abspath(args['individual_variety_file'])
 storage_name=os.path.basename(individual_variety_file)
-#print(storage_name)
-#print('minia_proceedings',minia_proceedings)
 def get_individual_variety_dict(file_path):
     individual_variety_dict=dict()
     index_variety_dict=dict()
@@ -225,7 +223,6 @@ def ssr_selection(individual_variety_file):
     global storage_name
     individual_variety_dict,all_individual,variety_list,index_variety_dict=get_individual_variety_dict(individual_variety_file)
     directory_path=output_path+'/'+storage_name+'_'+str(polymorphism_parameter)
-    print('directory_path',directory_path)
     try:
         os.mkdir(directory_path)
     except:
@@ -236,7 +233,6 @@ def ssr_selection(individual_variety_file):
     all_misa_file_path=[]
     for file in all_individual:
         file_misa=file+'.contigs.fa.misa'
-        print('misa_output_file:',file_misa)
         all_misa_file_path.append(file_misa)
     variety_dict=dict()
     for variety in individual_variety_dict:

@@ -14,7 +14,7 @@ from sklearn.decomposition import PCA
 from umap import UMAP
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-
+import time
 def get_variety_info(file_path):
 	individual_variety_dict = dict()
 	individual_to_variety_dict = dict()
@@ -116,21 +116,15 @@ def plot_results(dimension_results, true_labels, pred_labels, output_filebase,AR
 	plt.rcParams['font.family'] = 'Arial'
 	plt.rcParams['font.size'] = 9
 	plt.rcParams["pdf.fonttype"] = 42
-	# 获取类别数量
 	unique_true_labels = sorted(set(true_labels))
 	variety_count = len(unique_true_labels)
-
-	# 生成颜色映射
 	if colors is None:
 		colors = generate_random_colors(variety_count)
 	cluster_cmap = ListedColormap(colors)
-
-	# 创建绘图
-	fig, ax = plt.subplots(figsize=(74/25.4, 74/25.4))
+	fig, ax = plt.subplots(figsize=(90/25.4, 90/25.4))
 
 	scatter  = ax.scatter(dimension_results[:, 0], dimension_results[:, 1],s =10, c= pred_labels, cmap=cluster_cmap)
 
-	# 设置图表样式
 	for i, true_labels in enumerate(true_labels):
 		x, y = dimension_results[i, 0], dimension_results[i, 1]
 		ax.annotate(true_labels, (x, y), textcoords="offset points", xytext=(0, 5), ha='center')
@@ -150,12 +144,10 @@ def plot_results(dimension_results, true_labels, pred_labels, output_filebase,AR
 		horizontalalignment='left',# 水平对齐方式
 		)
 
-	# 保存并显示
 	plt.tight_layout()
 	plt.savefig(output_filebase + '.pdf')
 
 	print(f"output file is saved to {output_filebase}.pdf")
-
 
 def main():
 	parser = argparse.ArgumentParser()
@@ -163,6 +155,7 @@ def main():
 	parser.add_argument('-index', '--index_path', required=True)
 	parser.add_argument('-c', '--color_file')
 	args = parser.parse_args()
+	start_time = time.time()
 	input_path = os.path.abspath(args.input)
 	index_path = os.path.abspath(args.index_path)
 	input_basename = os.path.splitext(os.path.basename(input_path))[0]
@@ -205,5 +198,8 @@ def main():
 	# 运行 UMAP + K-Means,并绘制UMAP结果
 		best_umap_result,best_k_means_result,ARI = run_UMAP_and_k_means(matrix, label_true, variety_count)
 		plot_results(best_umap_result,label_true,best_k_means_result,output_path_umap,ARI)        
+	end_time = time.time()
+	stage_duration = end_time - start_time
+	print(f"cross_validation totally take {stage_duration} second")
 if __name__ == "__main__":
 	main()

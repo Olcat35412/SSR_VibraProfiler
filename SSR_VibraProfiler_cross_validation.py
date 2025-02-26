@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import argparse
+import time
 parser = argparse.ArgumentParser(description='A Variety Recognition Model Based on Whole Genome SSR Digital Features')
 parser.add_argument('-index','--index_path',required=True)
 parser.add_argument('-pp',required=True)
@@ -11,7 +12,7 @@ index_file=os.path.abspath(args['index_path'])
 pp=args['pp']
 output_path=os.path.abspath(args['output_path'])
 log_path=os.path.abspath(args['log_path'])
-
+start_time = time.time()
 def generate_index_file_for_all_indivduals(index_file):
     new_name_list=[]
     varieties=[]
@@ -29,7 +30,7 @@ def generate_index_file_for_all_indivduals(index_file):
                     new_file.write(other_line)
     return varieties,new_name_list
 varieties,all_index=generate_index_file_for_all_indivduals(index_file)
-print(varieties,all_index)
+#print(varieties,all_index)
 paired_list = list(zip(varieties,all_index))
 k=len(all_index)-1
 for variety,index in paired_list:
@@ -42,3 +43,6 @@ for variety,index in paired_list:
     command="SSR_VibraProfiler_model_predict.py -index {} -d {} -k {} -i {}>>{}".format(index,directory_path,k,index.split('.')[0]+".contigs.fa.misa",log_path)
     print(command)
     os.system(command)
+end_time = time.time()
+stage_duration = end_time - start_time
+print(f"cross_validation totally take {stage_duration} second")
