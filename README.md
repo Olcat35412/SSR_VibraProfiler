@@ -91,26 +91,14 @@ We used this software on 40 individuals from 8 Rhododendron varieties. You can f
 
 ```
 
-Dataset
-Original Dataset: Approximately 800GB of sequencing data after decompression.
-Lightweight Dataset: Approximately 40GB after decompression (5% of the original dataset).
+Dataset：
 You can download the data from the following links:
-
-Original Dataset
-Lightweight Dataset
-Assembly and Indexing
-You will need to prepare the Minia index files for each sequencing sample, then create a higher-level index file. You can use the provided index files and modify the paths as needed.
-
-## Original dataset
+Original Dataset: Approximately 800GB of sequencing data after decompression.
+```
 wget "https://china.scidb.cn/download?fileId=2779cd477eecc01f550144809f6b9e9a&username=jiangchen1234@163.com&traceId=a62cbd41-3e6d-482f-a101-6c2e9d1b8967"
-## Lightweight dataset
+```
+Lightweight Dataset: Approximately 40GB after decompression (5% of the original dataset).
+```
 wget https://china.scidb.cn/download?fileId=b463c9e8f1e2ce27ccc770739e662d15&username=jiangchen1234@163.com&traceId=jiangchen1234@163.com
+```
 
-Starting from Contigs Data
-If you wish to use contigs data directly, download the contigs file and prepare the index files (no need for Minia index files).
-
-SSR Classification and Evaluation
-Use the following command to build the SSR model:
-
-SSR_VibraProfiler_model_build.py -s 1 -e 3 -pp 0.125 -index index.txt -o output_path
-The results will be highly consistent with those in the paper, except for the automatically generated colors in the plots.
