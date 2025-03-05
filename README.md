@@ -43,11 +43,11 @@ chmod +x *
 
 This script integrates three key steps:
 
--Assembly of sequencing data using Minia-
+-Assembly of sequencing data using Minia
 
--Extraction of SSR information using MISA-
+-Extraction of SSR information using MISA
 
--Screening of SSR information and model construction-
+-Screening of SSR information and model construction
 
 Essential Parameters:
 ```
@@ -60,6 +60,7 @@ Essential Parameters:
 
 SSR_VibraProfiler_model_build.py -s 1 -e 3 -pp 0.8 -index index_file -o output_path
 ```
+
 Optional Parameters:
 ```
 -misap: Specifies the number of MISA processes (default: 1)
@@ -107,15 +108,17 @@ Essential Parameters:
 -o: Output directory path.
 -log: File path to save result data.
 
-```
 SSR_VibraProfiler_cross_validation.py -index -pp -o -log
 
-### Operation Example in Rhododendron
+```
+
+## Operation Example in Rhododendron
 We used this software on 40 individuals from 8 Rhododendron varieties. You can follow these steps to replicate our work or use the software for your own research.
 
 
-```
-Dataset：
+
+### Dataset
+
 You can download the data from the following links:
 
 Original Dataset: Approximately 800GB of sequencing data after decompression.
