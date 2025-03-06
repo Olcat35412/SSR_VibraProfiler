@@ -9,7 +9,7 @@ SSR_VibraProfiler is a tool designed to establish a DNA fingerprint database bas
 ```bash
 docker pull oldcat931/ssr_vibraprofiler:1.0
 ```
-### Installation from source code or conda
+### Install from source code or conda
 
 #### Requirements
 
